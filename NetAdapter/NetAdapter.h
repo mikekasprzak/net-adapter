@@ -39,14 +39,14 @@
 //		void DisableNetworking() {
 //			WSACleanup();
 //		}
-// 2. The concept of the "current" net adapter is actually a guess.
-//    On Windows it's the first adapter with a DNS Server.
-//    On Linux it's the first adapter without a localhost IP (127.0.0.1). Typically eth0.
+// 2. The concept of the "primary" net adapter is actually a guess.
+//    On Windows it's the first adapter with a DNS Server set.
+//    On Linux it's either "eth0", or the first adapter without a localhost IP (127.0.0.1).
 // 3. Net Adapter can be built with -DNET_ADAPTER_STUB to force usage of the stub (i.e. dummy code).
 // - ------------------------------------------------------------------------------------------ - //
 // // Usage 1: Get the Current only //
 // pNetAdapterInfo* Adapters = new_pNetAdapterInfo();							// Get adapters //
-// const NetAdapterInfo* Current = get_current_pNetAdapterInfo( Adapters );		// Get Current adapter //
+// const NetAdapterInfo* Current = get_primary_pNetAdapterInfo( Adapters );		// Get primary adapter //
 // printf( "%s: %s (%s)\n", Current->Name, Current->IP, Current->MAC );
 // delete_pNetAdapterInfo( Adapters );											// Clean up //
 //
@@ -54,17 +54,22 @@
 // pNetAdapterInfo* Adapters = new_pNetAdapterInfo();
 // size_t AdapterCount = count_pNetAdapterInfo(Adapters);
 // for ( size_t Index = 0; Index < AdapterCount; Index++ ) {
-//     const NetAdapterInfo* Current = get_pNetAdapterInfo( Adapters, Index );	// get_, not get_current_ //
+//     const NetAdapterInfo* Current = get_pNetAdapterInfo( Adapters, Index );	// get_, not get_primary_ //
 //     printf( "%i - %s: %s (%s)\n", Index, Current->Name, Current->IP, Current->MAC );
 // }
 // delete_pNetAdapterInfo( Adapters );
+// - ------------------------------------------------------------------------------------------ - //
+// Libraries Used:
+//   Visual Studio (automatic): ws2_32.lib Iphlpapi.lib
+//   MinGW: -lws2_32 -lIphlpapi (i.e. libws2_32.a libIphlpapi.a) 
+//   Linux: ?
 // - ------------------------------------------------------------------------------------------ - //
 // Changelog:
 // 0.01 -- Initial Release. 
 //         Windows XP to Windows 8 (non Metro) support.
 //         Linux support.
 // - ------------------------------------------------------------------------------------------ - //
-#include <string.h>		// size_t //
+#include <string.h>							// size_t //
 // - ------------------------------------------------------------------------------------------ - //
 #define NET_ADAPTER_IP_LENGTH	(8*4)+7+1	// 8 hex 16bit numbers, 7 colons, null terminator //
 #define NET_ADAPTER_MAC_LENGTH	(8*2)+7+1	// 8 hex 8bit numbers, 7 colons, null terminator //
@@ -79,14 +84,14 @@ struct NetAdapterInfo {
 		// Data is in LSB first format. This is suitable for display, but may not match the data //
 		//   formatting of your platforms socket library. //
 		unsigned char IPv4[4];				// Typical IPv4 address as an array of bytes //
-		unsigned short IPv6[8];				// Unused (until IPv6 support is added) //
+//		unsigned short IPv6[8];				// Typical IPv6 address as an array of shorts //
 		unsigned char MAC[6];				// typical MAC address as an array of bytes //
 	} Data;
 	
 	// Data that isn't available everywhere (or I haven't figured out yet) //
 	// subnet mask -- Linux             -- i.e. 255.255.255.0 on a typical LAN
-	// udp broadcast address -- Linux   -- i.e. 192.168.0.255 on a typical LAN
-	// udp multicast address -- Windows -- i.e. 224.0.0.1, but there are often many
+	// UDP broadcast address -- Linux   -- i.e. 192.168.0.255 on a typical LAN
+	// UDP multicast address -- Windows -- i.e. 224.0.0.1, but there are often many
 	// DNS Server -- Windows            -- i.e. 192.168.0.1 on a typical LAN
 	
 	char NetMask[NET_ADAPTER_IP_LENGTH];	// Linux/Unix Only //
@@ -103,7 +108,7 @@ int delete_pNetAdapterInfo( pNetAdapterInfo* Adapters );
 
 const size_t count_pNetAdapterInfo( const pNetAdapterInfo* Adapters );
 const NetAdapterInfo* get_pNetAdapterInfo( const pNetAdapterInfo* Adapters, const size_t Index );
-const NetAdapterInfo* get_current_pNetAdapterInfo( const pNetAdapterInfo* Adapters );
+const NetAdapterInfo* get_primary_pNetAdapterInfo( const pNetAdapterInfo* Adapters );
 // - ------------------------------------------------------------------------------------------ - //
 #endif // __NET_ADAPTER_H__
 // - ------------------------------------------------------------------------------------------ - //
