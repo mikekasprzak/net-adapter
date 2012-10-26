@@ -65,7 +65,7 @@ const NetAdapterInfo* get_pNetAdapterInfo( const pNetAdapterInfo*, const size_t 
 	return 0;
 }
 // - ------------------------------------------------------------------------------------------ - //
-const NetAdapterInfo* get_current_pNetAdapterInfo( const pNetAdapterInfo* ) {
+const NetAdapterInfo* get_primary_pNetAdapterInfo( const pNetAdapterInfo* ) {
 	return 0;
 }
 // - ------------------------------------------------------------------------------------------ - //

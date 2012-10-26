@@ -33,7 +33,8 @@
 // - ------------------------------------------------------------------------------------------ - //
 #include <Iphlpapi.h>
 // - ------------------------------------------------------------------------------------------ - //
-#pragma comment(lib, "Ws2_32.lib")		// Automatically include Winsock2 in Visual Studio //
+#pragma comment(lib, "Ws2_32.lib")		// Automatically including in Visual Studio //
+#pragma comment(lib, "Iphlpapi.lib")
 // - ------------------------------------------------------------------------------------------ - //
 #include "NetAdapter.h"
 #include "NetAdapter_Internal.h"
@@ -133,6 +134,24 @@ pNetAdapterInfo* new_pNetAdapterInfo() {
 				break;
 			}
 		}
+
+		// Anycast and Multicast address code, in case I ever decide to use them //
+		
+//		for ( IP_ADAPTER_ANYCAST_ADDRESS* Cur = Current->FirstAnycastAddress; Cur != 0; Cur = Cur->Next ) {
+//			//printf("** %i\n", Cur->Address.lpSockaddr->sa_family);
+//			if ( Cur->Address.lpSockaddr->sa_family == AF_INET ) {
+//				sockaddr_in* SAI = (sockaddr_in*)Cur->Address.lpSockaddr;
+//				printf( "Anycast: %s\n", inet_ntoa( SAI->sin_addr ) );
+//			}
+//		}
+		
+//		for ( IP_ADAPTER_MULTICAST_ADDRESS* Cur = Current->FirstMulticastAddress; Cur != 0; Cur = Cur->Next ) {
+//			//printf("*** %i\n", Cur->Address.lpSockaddr->sa_family);
+//			if ( Cur->Address.lpSockaddr->sa_family == AF_INET ) {
+//				sockaddr_in* SAI = (sockaddr_in*)Cur->Address.lpSockaddr;
+//				printf( "Multicast: %s\n", inet_ntoa( SAI->sin_addr ) );
+//			}
+//		}		
 		
 		// Copy Name //
 		{
@@ -197,7 +216,7 @@ const NetAdapterInfo* get_pNetAdapterInfo( const pNetAdapterInfo* Adapters, cons
 	}
 }
 // - ------------------------------------------------------------------------------------------ - //
-const NetAdapterInfo* get_current_pNetAdapterInfo( const pNetAdapterInfo* Adapters ) {
+const NetAdapterInfo* get_primary_pNetAdapterInfo( const pNetAdapterInfo* Adapters ) {
 	if ( Adapters ) {
 		size_t Index = 0;
 		
