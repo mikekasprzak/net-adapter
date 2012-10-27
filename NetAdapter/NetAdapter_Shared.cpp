@@ -23,12 +23,16 @@
 // 
 // For more information, please refer to <http://unlicense.org/>
 // - ------------------------------------------------------------------------------------------ - //
+#if !defined(NET_ADAPTER_STUB)
+// - ------------------------------------------------------------------------------------------ - //
 #include <string.h>		// memset //
 // - ------------------------------------------------------------------------------------------ - //
 #include "NetAdapter.h"
 #include "NetAdapter_Internal.h"
 // - ------------------------------------------------------------------------------------------ - //
 
+// - ------------------------------------------------------------------------------------------ - //
+// Private //
 // - ------------------------------------------------------------------------------------------ - //
 NetAdapterInfo* new_NetAdapterInfo() {
 	NetAdapterInfo* Ret = new NetAdapterInfo;
@@ -40,5 +44,57 @@ NetAdapterInfo* new_NetAdapterInfo() {
 // - ------------------------------------------------------------------------------------------ - //
 int delete_NetAdapterInfo( NetAdapterInfo* Adapter ) {
 	delete Adapter;
+
+	return 0;
 }
+// - ------------------------------------------------------------------------------------------ - //
+
+
+// - ------------------------------------------------------------------------------------------ - //
+// Public //
+// - ------------------------------------------------------------------------------------------ - //
+int delete_pNetAdapterInfo( pNetAdapterInfo* Adapters ) {
+	if ( Adapters ) {
+		// Delete the individual Adapters first //
+		for ( size_t idx = 0; Adapters[idx] != 0; idx++ ) {
+			delete Adapters[idx];
+		}
+
+		// Delete the array //
+		delete [] Adapters;
+		return 0;
+	}
+	else {
+		// Hey you goof! You gave me a null pointer! //
+		return -1;
+	}
+}
+// - ------------------------------------------------------------------------------------------ - //
+const size_t count_pNetAdapterInfo( const pNetAdapterInfo* Adapters ) {
+	if ( Adapters ) {
+		size_t Count = 0;
+		
+		while ( Adapters[Count] != 0 ) {
+			Count++;
+		};
+		
+		return Count;
+	}
+	else {
+		// Hey you goof! You gave me a null pointer! //
+		return 0;
+	}
+}
+// - ------------------------------------------------------------------------------------------ - //
+const NetAdapterInfo* get_pNetAdapterInfo( const pNetAdapterInfo* Adapters, const size_t Index ) {
+	if ( Adapters ) {
+		return Adapters[Index];
+	}
+	else {
+		// Hey you goof! You gave me a null pointer! //
+		return 0;
+	}
+}
+// - ------------------------------------------------------------------------------------------ - //
+#endif // !NET_ADAPTER_STUB //
 // - ------------------------------------------------------------------------------------------ - //
