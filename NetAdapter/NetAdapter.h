@@ -72,7 +72,7 @@
 // 0.3 -- NetMask and Broadcast Addresses on Windows.
 //        Cleaned up NetAdapterInfo. Less confused.
 //        QNX (BlackBerry/PlayBook) support.
-//        Fixed BSD support. Tested on FreeBSD 9.
+//        Fixed BSD support. Tested on FreeBSD 9 64bit.
 // 0.2 -- Mac and iOS support. Tested on Mountain Lion.
 //        BSD Family (Open, Free, Net) support.
 //        Android support.
@@ -84,7 +84,7 @@
 // - ------------------------------------------------------------------------------------------ - //
 #include <string.h>							// size_t //
 // - ------------------------------------------------------------------------------------------ - //
-#define NET_ADAPTER_IPV4_LENGTH	(4*3)+3+1	// 4 decimal 8bit numbers, 3 dots, null terminator //
+#define NET_ADAPTER_IPV4_LENGTH	(4*3)+3+1	// 4 integer 8bit numbers, 3 dots, null terminator //
 #define NET_ADAPTER_IPV6_LENGTH	(8*4)+7+1	// 8 hex 16bit numbers, 7 colons, null terminator //
 #define NET_ADAPTER_MAC_LENGTH	(8*2)+7+1	// 8 hex 8bit numbers, 7 colons, null terminator //
 // - ------------------------------------------------------------------------------------------ - //
