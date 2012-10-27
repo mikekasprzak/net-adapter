@@ -113,7 +113,8 @@ pNetAdapterInfo* new_pNetAdapterInfo() {
 			continue;
 
 		// Extract MAC //
-		if ( Current->PhysicalAddressLength > 0 ) {
+		//if ( Current->PhysicalAddressLength > 0 ) // Disabled, to be consistent with Unix //
+		{
 			memcpy( Adapters[Index]->Data.MAC, Current->PhysicalAddress, sizeof(Adapters[Index]->Data.MAC) );
 			sprintf( Adapters[Index]->MAC, "%02x:%02x:%02x:%02x:%02x:%02x",
 				Current->PhysicalAddress[0],
