@@ -35,13 +35,13 @@
 //		void EnableNetworking() {
 //			WSADATA wsaData;
 //			WSAStartup( MAKEWORD(2,2), &wsaData );		// 2.2 is XP+, and Win95 with an update //
-//      }
+//		}
 //		void DisableNetworking() {
 //			WSACleanup();
 //		}
 // 2. The concept of the "primary" net adapter is actually a guess.
 //    On Windows it's the first adapter with a DNS Server set.
-//    On Linux it's either "eth0", or the first adapter without a localhost IP (127.0.0.1).
+//    On Linux it's either "eth0", "en0", or the first adapter without a localhost IP (127.0.0.1).
 // 3. Net Adapter can be built with -DNET_ADAPTER_STUB to force usage of the stub (i.e. dummy code).
 // - ------------------------------------------------------------------------------------------ - //
 // // Usage 1: Get the Current only //
@@ -68,6 +68,8 @@
 //   Android: none
 // - ------------------------------------------------------------------------------------------ - //
 // Changelog:
+// 0.3 -- NetMask and Broadcast Addresses on Windows.
+//        Cleaned up NetAdapterInfo. Less confused.
 // 0.2 -- Mac and iOS support.
 //        BSD Family (Open, Free, Net) support.
 //        Android support.
@@ -78,34 +80,33 @@
 // - ------------------------------------------------------------------------------------------ - //
 #include <string.h>							// size_t //
 // - ------------------------------------------------------------------------------------------ - //
-#define NET_ADAPTER_IP_LENGTH	(8*4)+7+1	// 8 hex 16bit numbers, 7 colons, null terminator //
+#define NET_ADAPTER_IPV4_LENGTH	(4*3)+3+1	// 4 decimal 8bit numbers, 3 dots, null terminator //
+#define NET_ADAPTER_IPV6_LENGTH	(8*4)+7+1	// 8 hex 16bit numbers, 7 colons, null terminator //
 #define NET_ADAPTER_MAC_LENGTH	(8*2)+7+1	// 8 hex 8bit numbers, 7 colons, null terminator //
 // - ------------------------------------------------------------------------------------------ - //
 struct NetAdapterInfo {
-	char Name[128+1];						// A copy of its "nice" name. //
+	char Name[128];								// A copy of its "nice" name. //
 	
-	char IP[NET_ADAPTER_IP_LENGTH];			// Enough for an IPv6 (though only v4 supported) //
-	char MAC[NET_ADAPTER_MAC_LENGTH];		// Enough for an 8-part MAC. Usually 6 parts. //
+	char IP[NET_ADAPTER_IPV4_LENGTH];			// Enough for an IPv4 string //
+	char NetMask[NET_ADAPTER_IPV4_LENGTH];
+	char Broadcast[NET_ADAPTER_IPV4_LENGTH];
+
+//	char IPv6[NET_ADAPTER_IPV6_LENGTH];			// Enough for an IPv6 string //
+
+	char MAC[NET_ADAPTER_MAC_LENGTH];			// Enough for an 8-part MAC. Usually 6 parts. //
 	
 	struct {
-		// Data is in LSB first format. This is suitable for display, but may not match the data //
-		//   formatting of your platforms socket library. //
-		unsigned char IPv4[4];				// Typical IPv4 address as an array of bytes //
-//		unsigned short IPv6[8];				// Typical IPv6 address as an array of shorts //
-		unsigned char MAC[6];				// typical MAC address as an array of bytes //
+		unsigned char IP[4];					// Typical IPv4 address as an array of bytes //
+		unsigned char NetMask[4];				// Typical IPv4 Subnet Mask //
+		unsigned char Broadcast[4];				// Typical IPv4 Broadcast Address //
+
+//		unsigned short IPv6[8];					// Typical IPv6 address as an array of shorts //
+
+		unsigned char MAC[6];					// Typical MAC address as an array of bytes //
 	} Data;
-	
-	// Data that isn't available everywhere (or I haven't figured out yet) //
-	// subnet mask -- Unix              -- i.e. 255.255.255.0 on a typical LAN
-	// UDP broadcast address -- Unix    -- i.e. 192.168.0.255 on a typical LAN
-	// UDP multicast address -- Windows -- i.e. 224.0.0.1, but there are often many
-	// DNS Server -- Windows            -- i.e. 192.168.0.1 on a typical LAN
-	
-	char NetMask[NET_ADAPTER_IP_LENGTH];	// Linux/Unix Only //
-	char Broadcast[NET_ADAPTER_IP_LENGTH];	// Linux/Unix Only (could be derived from NetMask) //
-	
-	char Description[256+1];				// Windows Only //
-	char DNS[NET_ADAPTER_IP_LENGTH];		// Windows Only //
+		
+	char Description[256];						// Windows Only //
+	char DNS[NET_ADAPTER_IPV4_LENGTH];			// Windows Only (so far) //
 };
 // - ------------------------------------------------------------------------------------------ - //
 typedef NetAdapterInfo* pNetAdapterInfo;

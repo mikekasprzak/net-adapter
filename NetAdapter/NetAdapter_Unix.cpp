@@ -101,10 +101,10 @@ pNetAdapterInfo* new_pNetAdapterInfo() {
 				sockaddr_in* SAI = (sockaddr_in*)Current->ifa_addr;
 				const unsigned char* DataAddr = (const unsigned char*)&(SAI->sin_addr.s_addr);
 
-				int* IPv4 = (int*)Adapters[Index]->Data.IPv4;
+				int* IPv4 = (int*)Adapters[Index]->Data.IP;
 				*IPv4 = *(int*)DataAddr;
 			
-//				printf("%i.%i.%i.%i\n", Adapters[Index]->Data.IPv4[0], Adapters[Index]->Data.IPv4[1], Adapters[Index]->Data.IPv4[2], Adapters[Index]->Data.IPv4[3] );
+//				printf("%i.%i.%i.%i\n", Adapters[Index]->Data.IP[0], Adapters[Index]->Data.IP[1], Adapters[Index]->Data.IP[2], Adapters[Index]->Data.IP[3] );
 			
 				// Copy Name //
 				safe_sprintf( Adapters[Index]->Name, sizeof(Adapters[Index]->Name), "%s", Current->ifa_name );
@@ -202,7 +202,7 @@ const NetAdapterInfo* get_primary_pNetAdapterInfo( const pNetAdapterInfo* Adapte
 			// If none of the above, then assume the first non LocalHost address is primary //
 			if ( NotLocalHost == 0 ) {
 				int* a = (int*)LocalHostIPv4;
-				int* b = (int*)Adapters[Index]->Data.IPv4;
+				int* b = (int*)Adapters[Index]->Data.IP;
 				if ( *a != *b ) {
 					NotLocalHost = Adapters[Index];
 				}
