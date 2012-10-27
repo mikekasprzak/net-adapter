@@ -24,7 +24,7 @@
 // For more information, please refer to <http://unlicense.org/>
 // - ------------------------------------------------------------------------------------------ - //
 #if !defined(NET_ADAPTER_STUB)
-#if defined(__unix__) || defined(__APPLE__) // Unix (catchall for __linux__ and __bsdi__) //
+#if (defined(__unix__) && !defined(__CYGWIN__)) || defined(__APPLE__)
 // - ------------------------------------------------------------------------------------------ - //
 #if defined(__linux__) || defined(__ANDROID__)
 #define _LINUX_PATH
@@ -191,11 +191,15 @@ const NetAdapterInfo* get_primary_pNetAdapterInfo( const pNetAdapterInfo* Adapte
 		
 		size_t Index = 0;
 		while ( Adapters[Index] != 0 ) {
-			// Assume "eth0" is the primary //
+			// Assume "eth0" is the primary (Linux) //
 			if ( strcmp( Adapters[Index]->Name, "eth0" ) == 0 )
 				return Adapters[Index];
+
+			// Assume "en0" is the primary (OSX) //
+			if ( strcmp( Adapters[Index]->Name, "en0" ) == 0 )
+				return Adapters[Index];
 			
-			// If no "eth0", then assume the first non LocalHost address is primary //
+			// If none of the above, then assume the first non LocalHost address is primary //
 			if ( NotLocalHost == 0 ) {
 				int* a = (int*)LocalHostIPv4;
 				int* b = (int*)Adapters[Index]->Data.IPv4;
@@ -215,6 +219,6 @@ const NetAdapterInfo* get_primary_pNetAdapterInfo( const pNetAdapterInfo* Adapte
 	}
 }
 // - ------------------------------------------------------------------------------------------ - //
-#endif // __linux__ //
+#endif // defined(__unix__) && !defined(__CYGWIN__) || defined(__APPLE__) //
 #endif // !NET_ADAPTER_STUB //
 // - ------------------------------------------------------------------------------------------ - //
