@@ -24,17 +24,30 @@
 // For more information, please refer to <http://unlicense.org/>
 // - ------------------------------------------------------------------------------------------ - //
 #if !defined(NET_ADAPTER_STUB)
-#if defined(__linux__) // Linux (not Mac or BSD) //
+#if defined(__unix__) || defined(__APPLE__) // Unix (catchall for __linux__ and __bsdi__) //
+// - ------------------------------------------------------------------------------------------ - //
+#if defined(__linux__) || defined(__ANDROID__)
+#define _LINUX_PATH
+#else // defined(__APPLE__) || defined(__bsdi__) || defined(__unix__) // Other Unix //
+#define _UNIX_PATH
+#endif // defined(__linux__) || defined(__APPLE__)
 // - ------------------------------------------------------------------------------------------ - //
 #include <ifaddrs.h>
 #include <netinet/in.h>
 #include <net/if.h>				// IFF_BROADCAST
 #include <sys/socket.h>
-#include <linux/if_packet.h>	// sockaddr_ll
 #include <netdb.h>
+// - ------------------------------------------------------------------------------------------ - //
+#ifdef _LINUX_PATH
+#include <linux/if_packet.h>	// sockaddr_ll
+#else // _UNIX_PATH //
+#include <net/if_dl.h>			// sockaddr_dl
+#endif // _LINUX_PATH //
 // - ------------------------------------------------------------------------------------------ - //
 // http://www.kernel.org/doc/man-pages/online/pages/man3/getifaddrs.3.html
 // http://stackoverflow.com/questions/6762766/mac-address-with-getifaddrs
+// http://stackoverflow.com/questions/3964494/having-a-problem-figuring-out-how-to-get-ethernet-interface-info-on-mac-os-x-usi
+// http://freebsd.active-venture.com/FreeBSD-srctree/newsrc/net/if_dl.h.html
 // - ------------------------------------------------------------------------------------------ - //
 #include "NetAdapter.h"
 #include "NetAdapter_Internal.h"
@@ -115,6 +128,7 @@ pNetAdapterInfo* new_pNetAdapterInfo() {
 		// 2nd pass, extract other data (MAC Address, IPv6) //
 		Index = 0;
 		for( ifaddrs* Current = IFA; Current != 0; Current = Current->ifa_next ) {
+#ifdef _LINUX_PATH
 			// If an AF_PACKET device (i.e. hardware device) //
 			if ( Current->ifa_addr->sa_family == AF_PACKET ) {
 				for( int idx=0; idx < IPv4Count; idx++ ) {
@@ -135,7 +149,28 @@ pNetAdapterInfo* new_pNetAdapterInfo() {
 					}
 				}
 			}
-			else if ( Current->ifa_addr->sa_family == AF_INET6 ) {
+#else // _UNIX_PATH //
+			if ( Current->ifa_addr->sa_family == AF_LINK ) {
+				for( int idx=0; idx < IPv4Count; idx++ ) {
+					if ( strcmp( Adapters[idx]->Name, Current->ifa_name ) == 0 ) {
+						sockaddr_dl* s = (sockaddr_dl*)Current->ifa_addr;
+
+						memcpy( Adapters[idx]->Data.MAC, LLADDR(s), s->sdl_alen );
+						
+						safe_sprintf( Adapters[idx]->MAC, sizeof(Adapters[idx]->MAC), "%02x:%02x:%02x:%02x:%02x:%02x",
+							Adapters[idx]->Data.MAC[0],
+							Adapters[idx]->Data.MAC[1],
+							Adapters[idx]->Data.MAC[2],
+							Adapters[idx]->Data.MAC[3],
+							Adapters[idx]->Data.MAC[4],
+							Adapters[idx]->Data.MAC[5]
+							);
+					}
+				}
+			}
+#endif // _LINUX_PATH //
+			
+			if ( Current->ifa_addr->sa_family == AF_INET6 ) {
 				// IPv6 Address //
 			}
 		}

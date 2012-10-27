@@ -33,19 +33,13 @@
 // You can use HostName.IPInformation.PrefixLength.
 // See http://msdn.microsoft.com/en-us/library/windows/apps/windows.networking.connectivity.ipinformation.prefixlength.aspx
 // - ------------------------------------------------------------------------------------------ - //
-//#elif defined(__bsdi__) //defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__)
-// - ------------------------------------------------------------------------------------------ - //
 // NOTE: Getting the Mac address from BSD is said to be slightly different (see linux notes)
-// - ------------------------------------------------------------------------------------------ - //
-//#elif defined(__APPLE__) // Mac and iOS... likely combined with BSD //
 // - ------------------------------------------------------------------------------------------ - //
 //#elif defined(__CYGWIN__) // Cygwin... likely combined with something. //
 // - ------------------------------------------------------------------------------------------ - //
 //#elif defined(__QNXNTO__) // PlayBook and BlackBerry 10 ? //
 // - ------------------------------------------------------------------------------------------ - //
-//#elif defined(__ANDROID__)
-// - ------------------------------------------------------------------------------------------ - //
-#if defined(NET_ADAPTER_STUB) || !defined(_WIN32) && !defined(__linux__)
+#if defined(NET_ADAPTER_STUB) || !defined(_WIN32) && !defined(__unix__) && !defined(__APPLE__)
 // - ------------------------------------------------------------------------------------------ - //
 #include "NetAdapter.h"
 // - ------------------------------------------------------------------------------------------ - //
