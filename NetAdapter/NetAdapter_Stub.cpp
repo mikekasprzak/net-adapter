@@ -39,7 +39,7 @@
 // - ------------------------------------------------------------------------------------------ - //
 //#elif defined(__QNXNTO__) // PlayBook and BlackBerry 10 ? //
 // - ------------------------------------------------------------------------------------------ - //
-#if defined(NET_ADAPTER_STUB) || !defined(_WIN32) && !defined(__unix__) && !defined(__APPLE__)
+#if defined(NET_ADAPTER_STUB) || defined(__CYGWIN__) || !defined(_WIN32) && !defined(__unix__) && !defined(__APPLE__)
 // - ------------------------------------------------------------------------------------------ - //
 #include "NetAdapter.h"
 // - ------------------------------------------------------------------------------------------ - //
@@ -63,5 +63,5 @@ const NetAdapterInfo* get_primary_pNetAdapterInfo( const pNetAdapterInfo* ) {
 	return 0;
 }
 // - ------------------------------------------------------------------------------------------ - //
-#endif // _WIN32, __linux__, etc //
+#endif // defined(NET_ADAPTER_STUB) || defined(__CYGWIN__) || !defined(_WIN32) && !defined(__unix__) && !defined(__APPLE__) //
 // - ------------------------------------------------------------------------------------------ - //

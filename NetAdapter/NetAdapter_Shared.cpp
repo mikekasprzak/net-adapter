@@ -24,7 +24,7 @@
 // For more information, please refer to <http://unlicense.org/>
 // - ------------------------------------------------------------------------------------------ - //
 #if !defined(NET_ADAPTER_STUB)
-#if defined(_WIN32) || defined(__unix__) || defined(__APPLE__)
+#if defined(_WIN32) || (defined(__unix__) && !defined(__CYGWIN__)) || defined(__APPLE__)
 // - ------------------------------------------------------------------------------------------ - //
 #include <string.h>		// memset //
 // - ------------------------------------------------------------------------------------------ - //
@@ -97,6 +97,6 @@ const NetAdapterInfo* get_pNetAdapterInfo( const pNetAdapterInfo* Adapters, cons
 	}
 }
 // - ------------------------------------------------------------------------------------------ - //
-#endif // defined(_WIN32) || defined(__unix__) || defined(__APPLE__) //
+#endif // defined(_WIN32) || (defined(__unix__) && !defined(__CYGWIN__)) || defined(__APPLE__) //
 #endif // !NET_ADAPTER_STUB //
 // - ------------------------------------------------------------------------------------------ - //
