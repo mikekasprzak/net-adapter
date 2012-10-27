@@ -24,7 +24,7 @@
 // For more information, please refer to <http://unlicense.org/>
 // - ------------------------------------------------------------------------------------------ - //
 #if !defined(NET_ADAPTER_STUB)
-#if (defined(__unix__) && !defined(__CYGWIN__)) || defined(__APPLE__)
+#if (defined(__unix__) && !defined(__CYGWIN__)) || defined(__APPLE__) || defined(__QNXNTO__)
 // - ------------------------------------------------------------------------------------------ - //
 #if defined(__linux__) || defined(__ANDROID__)
 #define _LINUX_PATH
@@ -219,6 +219,6 @@ const NetAdapterInfo* get_primary_pNetAdapterInfo( const pNetAdapterInfo* Adapte
 	}
 }
 // - ------------------------------------------------------------------------------------------ - //
-#endif // defined(__unix__) && !defined(__CYGWIN__) || defined(__APPLE__) //
+#endif // defined(__unix__) && !defined(__CYGWIN__) || defined(__APPLE__) || defined(__QNXNTO__) //
 #endif // !NET_ADAPTER_STUB //
 // - ------------------------------------------------------------------------------------------ - //

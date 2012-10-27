@@ -25,21 +25,9 @@
 // - ------------------------------------------------------------------------------------------ - //
 // http://sourceforge.net/p/predef/wiki/OperatingSystems/
 // - ------------------------------------------------------------------------------------------ - //
-//#if defined(WINAPI_FAMILY_APP) // WinRT //
+#if defined(NET_ADAPTER_STUB) || defined(__CYGWIN__) || !defined(_WIN32) && !defined(__unix__) && !defined(__APPLE__) && !defined(__QNXNTO__) && !defined(WINAPI_FAMILY_APP)
 // - ------------------------------------------------------------------------------------------ - //
-// http://stackoverflow.com/questions/11961771/macro-to-recognize-winrt
-
-// Subnet Mask on WinRT
-// You can use HostName.IPInformation.PrefixLength.
-// See http://msdn.microsoft.com/en-us/library/windows/apps/windows.networking.connectivity.ipinformation.prefixlength.aspx
-// - ------------------------------------------------------------------------------------------ - //
-// NOTE: Getting the Mac address from BSD is said to be slightly different (see linux notes)
-// - ------------------------------------------------------------------------------------------ - //
-//#elif defined(__CYGWIN__) // Cygwin... likely combined with something. //
-// - ------------------------------------------------------------------------------------------ - //
-//#elif defined(__QNXNTO__) // PlayBook and BlackBerry 10 ? //
-// - ------------------------------------------------------------------------------------------ - //
-#if defined(NET_ADAPTER_STUB) || defined(__CYGWIN__) || !defined(_WIN32) && !defined(__unix__) && !defined(__APPLE__)
+// No Cygwin Support //
 // - ------------------------------------------------------------------------------------------ - //
 #include "NetAdapter.h"
 // - ------------------------------------------------------------------------------------------ - //
@@ -63,5 +51,5 @@ const NetAdapterInfo* get_primary_pNetAdapterInfo( const pNetAdapterInfo* ) {
 	return 0;
 }
 // - ------------------------------------------------------------------------------------------ - //
-#endif // defined(NET_ADAPTER_STUB) || defined(__CYGWIN__) || !defined(_WIN32) && !defined(__unix__) && !defined(__APPLE__) //
+#endif // defined(NET_ADAPTER_STUB) || defined(__CYGWIN__) || !defined(_WIN32) && !defined(__unix__) && !defined(__APPLE__) && !defined(__QNXNTO__) && !defined(WINAPI_FAMILY_APP) //
 // - ------------------------------------------------------------------------------------------ - //
