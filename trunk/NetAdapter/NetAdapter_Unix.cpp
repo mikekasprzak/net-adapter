@@ -32,10 +32,11 @@
 #define _UNIX_PATH
 #endif // defined(__linux__) || defined(__APPLE__)
 // - ------------------------------------------------------------------------------------------ - //
+#include <sys/types.h>
 #include <ifaddrs.h>
 #include <netinet/in.h>
-#include <net/if.h>				// IFF_BROADCAST
 #include <sys/socket.h>
+#include <net/if.h>				// IFF_BROADCAST
 #include <netdb.h>
 // - ------------------------------------------------------------------------------------------ - //
 #ifdef _LINUX_PATH
@@ -195,8 +196,12 @@ const NetAdapterInfo* get_primary_pNetAdapterInfo( const pNetAdapterInfo* Adapte
 			if ( strcmp( Adapters[Index]->Name, "eth0" ) == 0 )
 				return Adapters[Index];
 
-			// Assume "en0" is the primary (OSX) //
+			// Assume "en0" is the primary (OSX, iOS) //
 			if ( strcmp( Adapters[Index]->Name, "en0" ) == 0 )
+				return Adapters[Index];
+
+			// Assume "em0" is the primary (BSD) //
+			if ( strcmp( Adapters[Index]->Name, "em0" ) == 0 )
 				return Adapters[Index];
 			
 			// If none of the above, then assume the first non LocalHost address is primary //
