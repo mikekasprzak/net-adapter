@@ -63,12 +63,18 @@
 //   Visual Studio (automatic): ws2_32.lib Iphlpapi.lib
 //   MinGW: -lws2_32 -lIphlpapi (i.e. libws2_32.a libIphlpapi.a) 
 //   Linux: none
+//   MacOS X: none
+//   BSD: none
+//   Android: none
 // - ------------------------------------------------------------------------------------------ - //
 // Changelog:
-// 0.01 -- Initial Release. 
-//         Windows XP to Windows 8 (non Metro) support.
-//         Linux support.
-//         Thanks to Seth Robinson for his VC2005 fixes.
+// 0.2 -- Mac and iOS support.
+//        BSD Family (Open, Free, Net) support.
+//        Android support.
+// 0.1 -- Initial Release. 
+//        Windows XP to Windows 8 (non Metro) support.
+//        Linux support.
+//        Thanks to Seth Robinson for his VC2005 fixes.
 // - ------------------------------------------------------------------------------------------ - //
 #include <string.h>							// size_t //
 // - ------------------------------------------------------------------------------------------ - //
@@ -90,8 +96,8 @@ struct NetAdapterInfo {
 	} Data;
 	
 	// Data that isn't available everywhere (or I haven't figured out yet) //
-	// subnet mask -- Linux             -- i.e. 255.255.255.0 on a typical LAN
-	// UDP broadcast address -- Linux   -- i.e. 192.168.0.255 on a typical LAN
+	// subnet mask -- Unix              -- i.e. 255.255.255.0 on a typical LAN
+	// UDP broadcast address -- Unix    -- i.e. 192.168.0.255 on a typical LAN
 	// UDP multicast address -- Windows -- i.e. 224.0.0.1, but there are often many
 	// DNS Server -- Windows            -- i.e. 192.168.0.1 on a typical LAN
 	
