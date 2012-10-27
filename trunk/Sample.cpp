@@ -21,10 +21,18 @@ int main( int argc, char* argv[] ) {
 		pNetAdapterInfo* Adapters = new_pNetAdapterInfo();							// Get adapters //
 		
 		const NetAdapterInfo* Current = get_primary_pNetAdapterInfo( Adapters );	// Get primary adapter //
-		if ( Current )
-			printf( "Primary:\n%s: %s (%s)\n", Current->Name, Current->IP, Current->MAC );
-		else
+		if ( Current ) {
+			printf( "Primary:\n%s: %s/%s [%s] (%s)\n", 
+				Current->Name, 
+				Current->IP, 
+				Current->NetMask, 
+				Current->Broadcast, 
+				Current->MAC 
+				);
+		}
+		else {
 			printf( "No Primary Adapter Found!\n" );
+		}
 
 		delete_pNetAdapterInfo( Adapters );											// Clean up //
 	}
