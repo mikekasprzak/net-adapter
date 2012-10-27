@@ -68,6 +68,7 @@
 // 0.01 -- Initial Release. 
 //         Windows XP to Windows 8 (non Metro) support.
 //         Linux support.
+//         Thanks to Seth Robinson for his VC2005 fixes.
 // - ------------------------------------------------------------------------------------------ - //
 #include <string.h>							// size_t //
 // - ------------------------------------------------------------------------------------------ - //
@@ -103,10 +104,12 @@ struct NetAdapterInfo {
 // - ------------------------------------------------------------------------------------------ - //
 typedef NetAdapterInfo* pNetAdapterInfo;
 // - ------------------------------------------------------------------------------------------ - //
-pNetAdapterInfo* new_pNetAdapterInfo();
-int delete_pNetAdapterInfo( pNetAdapterInfo* Adapters );
+pNetAdapterInfo* new_pNetAdapterInfo();									// Returns Multiple Adapters //
+int delete_pNetAdapterInfo( pNetAdapterInfo* Adapters );				// Deletes those Adapters //
 
-const size_t count_pNetAdapterInfo( const pNetAdapterInfo* Adapters );
+const size_t count_pNetAdapterInfo( const pNetAdapterInfo* Adapters );	// How Many Adapters //
+
+// Both return a single Adapter (notice the missing "p" prefix) //
 const NetAdapterInfo* get_pNetAdapterInfo( const pNetAdapterInfo* Adapters, const size_t Index );
 const NetAdapterInfo* get_primary_pNetAdapterInfo( const pNetAdapterInfo* Adapters );
 // - ------------------------------------------------------------------------------------------ - //

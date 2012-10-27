@@ -28,8 +28,8 @@
 // - ------------------------------------------------------------------------------------------ - //
 // We need to do this ourselves: http://msdn.microsoft.com/en-us/library/aa383745.aspx
 #define _WIN32_WINNT 0x0501				// Windows XP+ //
-#include <windows.h>
 #include <winsock2.h>
+#include <windows.h>
 // - ------------------------------------------------------------------------------------------ - //
 #include <Iphlpapi.h>
 // - ------------------------------------------------------------------------------------------ - //
@@ -97,10 +97,8 @@ pNetAdapterInfo* new_pNetAdapterInfo() {
 				sockaddr_in* SAI = (sockaddr_in*)Cur->Address.lpSockaddr;
 				const unsigned char* DataAddr = (const unsigned char*)&(SAI->sin_addr.s_addr);
 
-				Adapters[Index]->Data.IPv4[0] = DataAddr[3];
-				Adapters[Index]->Data.IPv4[1] = DataAddr[2];
-				Adapters[Index]->Data.IPv4[2] = DataAddr[1];
-				Adapters[Index]->Data.IPv4[3] = DataAddr[0];
+				int* IPv4 = (int*)Adapters[Index]->Data.IPv4;
+				*IPv4 = *(int*)DataAddr;
 								
 				safe_sprintf( Adapters[Index]->IP, sizeof(Adapters[Index]->IP), "%s", inet_ntoa( SAI->sin_addr ) );
 				
@@ -171,49 +169,6 @@ pNetAdapterInfo* new_pNetAdapterInfo() {
 	delete IPA;
 
 	return Adapters;
-}
-// - ------------------------------------------------------------------------------------------ - //
-int delete_pNetAdapterInfo( pNetAdapterInfo* Adapters ) {
-	if ( Adapters ) {
-		// Delete the individual Adapters first //
-		for ( size_t idx = 0; Adapters[idx] != 0; idx++ ) {
-			delete Adapters[idx];
-		}
-
-		// Delete the array //
-		delete [] Adapters;
-		return 0;
-	}
-	else {
-		// Hey you goof! You gave me a null pointer! //
-		return -1;
-	}
-}
-// - ------------------------------------------------------------------------------------------ - //
-const size_t count_pNetAdapterInfo( const pNetAdapterInfo* Adapters ) {
-	if ( Adapters ) {
-		size_t Count = 0;
-		
-		while ( Adapters[Count] != 0 ) {
-			Count++;
-		};
-		
-		return Count;
-	}
-	else {
-		// Hey you goof! You gave me a null pointer! //
-		return 0;
-	}
-}
-// - ------------------------------------------------------------------------------------------ - //
-const NetAdapterInfo* get_pNetAdapterInfo( const pNetAdapterInfo* Adapters, const size_t Index ) {
-	if ( Adapters ) {
-		return Adapters[Index];
-	}
-	else {
-		// Hey you goof! You gave me a null pointer! //
-		return 0;
-	}
 }
 // - ------------------------------------------------------------------------------------------ - //
 const NetAdapterInfo* get_primary_pNetAdapterInfo( const pNetAdapterInfo* Adapters ) {
