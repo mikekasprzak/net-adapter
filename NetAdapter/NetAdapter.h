@@ -62,7 +62,7 @@
 // Libraries Used:
 //   Visual Studio (automatic): ws2_32.lib Iphlpapi.lib
 //   MinGW: -lws2_32 -lIphlpapi (i.e. libws2_32.a libIphlpapi.a) 
-//   Linux: ?
+//   Linux: none
 // - ------------------------------------------------------------------------------------------ - //
 // Changelog:
 // 0.01 -- Initial Release. 
