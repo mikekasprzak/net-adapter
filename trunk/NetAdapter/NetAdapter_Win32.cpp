@@ -32,6 +32,7 @@
 #include <windows.h>
 // - ------------------------------------------------------------------------------------------ - //
 #include <Iphlpapi.h>
+#include <ws2tcpip.h>
 // - ------------------------------------------------------------------------------------------ - //
 #pragma comment(lib, "Ws2_32.lib")		// Automatically including in Visual Studio //
 #pragma comment(lib, "Iphlpapi.lib")
@@ -97,7 +98,7 @@ pNetAdapterInfo* new_pNetAdapterInfo() {
 				sockaddr_in* SAI = (sockaddr_in*)Cur->Address.lpSockaddr;
 				const unsigned char* DataAddr = (const unsigned char*)&(SAI->sin_addr.s_addr);
 
-				int* IPv4 = (int*)Adapters[Index]->Data.IPv4;
+				int* IPv4 = (int*)Adapters[Index]->Data.IP;
 				*IPv4 = *(int*)DataAddr;
 								
 				safe_sprintf( Adapters[Index]->IP, sizeof(Adapters[Index]->IP), "%s", inet_ntoa( SAI->sin_addr ) );
@@ -167,6 +168,56 @@ pNetAdapterInfo* new_pNetAdapterInfo() {
 	}	
 	
 	delete IPA;
+
+	// Retrieve NetMask and Broadcast // 
+	{
+		SOCKET sd = WSASocket(AF_INET, SOCK_DGRAM, 0, 0, 0, 0);
+		if ( sd != SOCKET_ERROR ) {
+			DWORD BytesReturned = 0;
+			INTERFACE_INFO InterfaceList[32];
+			if ( WSAIoctl( sd, SIO_GET_INTERFACE_LIST, 0, 0, &InterfaceList, sizeof(InterfaceList), &BytesReturned, 0, 0) != SOCKET_ERROR ) {
+				size_t NumInterfaces = BytesReturned / sizeof(INTERFACE_INFO);
+				for ( size_t idx = 0; idx < NumInterfaces; idx++ ) {
+					for ( size_t idx2 = 0; idx2 < IPv4Count; idx2++ ) {
+						u_long inFlags = InterfaceList[idx].iiFlags;
+						sockaddr_in* inIP = (sockaddr_in*)&(InterfaceList[idx].iiAddress);
+						sockaddr_in* inNetMask = (sockaddr_in*)&(InterfaceList[idx].iiNetmask);
+						sockaddr_in* inBroadcast = (sockaddr_in*)&(InterfaceList[idx].iiBroadcastAddress);
+						
+						// Flags: IFF_UP, IFF_POINTTOPOINT, IFF_LOOPBACK, IFF_BROADCAST, IFF_MULTICAST //
+
+						int* a = (int*)Adapters[idx2]->Data.IP;
+						int* b = (int*)&(inIP->sin_addr.s_addr);
+						
+						if ( *a == *b ) {
+							int* NetMask = (int*)Adapters[idx2]->Data.NetMask;
+							*NetMask = *(int*)&(inNetMask->sin_addr.s_addr);
+
+							safe_sprintf( 
+								Adapters[idx2]->NetMask, sizeof(Adapters[idx2]->NetMask), 
+								"%s", 
+								inet_ntoa( inNetMask->sin_addr ) 
+								);
+							
+							// The Broadcast Address that WinSock2 recommends is terrible. All 255's. So I calc. //
+							
+							int* Broadcast = (int*)Adapters[idx2]->Data.Broadcast;
+							*Broadcast = ((*a) & (*NetMask)) | (~(*NetMask));
+							
+							unsigned char* BC = Adapters[idx2]->Data.Broadcast;
+
+							safe_sprintf( 
+								Adapters[idx2]->Broadcast, sizeof(Adapters[idx2]->Broadcast), 
+								"%i.%i.%i.%i", 
+								BC[0],BC[1],BC[2],BC[3]
+								);        							
+						}
+					}
+				}
+			}
+			closesocket( sd );
+		}
+	}
 
 	return Adapters;
 }
