@@ -44,7 +44,7 @@
 //    On Linux it's either "eth0", "en0", or the first adapter without a localhost IP (127.0.0.1).
 // 3. Net Adapter can be built with -DNET_ADAPTER_STUB to force usage of the stub (i.e. dummy code).
 // - ------------------------------------------------------------------------------------------ - //
-// // Usage 1: Get the Current only //
+// // Usage 1: Get the primary only //
 // pNetAdapterInfo* Adapters = new_pNetAdapterInfo();							// Get adapters //
 // const NetAdapterInfo* Current = get_primary_pNetAdapterInfo( Adapters );		// Get primary adapter //
 // printf( "%s: %s (%s)\n", Current->Name, Current->IP, Current->MAC );
@@ -66,17 +66,20 @@
 //   MacOS X: none
 //   BSD: none
 //   Android: none
+//   QNX: none
 // - ------------------------------------------------------------------------------------------ - //
 // Changelog:
 // 0.3 -- NetMask and Broadcast Addresses on Windows.
 //        Cleaned up NetAdapterInfo. Less confused.
 //        QNX (BlackBerry/PlayBook) support.
-// 0.2 -- Mac and iOS support.
+//        Fixed BSD support. Tested on FreeBSD 9.
+// 0.2 -- Mac and iOS support. Tested on Mountain Lion.
 //        BSD Family (Open, Free, Net) support.
 //        Android support.
+//        Cygwin disabled. Sorry Cyggy. Use MinGW instead.
 // 0.1 -- Initial Release. 
-//        Windows XP to Windows 8 (non Metro) support.
-//        Linux support.
+//        Windows XP to Windows 8 (non Metro) support. Tested on MinGW.
+//        Linux support. Tested on Ubuntu 12.4 32bit.
 //        Thanks to Seth Robinson for his VC2005 fixes.
 // - ------------------------------------------------------------------------------------------ - //
 #include <string.h>							// size_t //
@@ -115,7 +118,7 @@ typedef NetAdapterInfo* pNetAdapterInfo;
 pNetAdapterInfo* new_pNetAdapterInfo();									// Returns Multiple Adapters //
 int delete_pNetAdapterInfo( pNetAdapterInfo* Adapters );				// Deletes those Adapters //
 
-const size_t count_pNetAdapterInfo( const pNetAdapterInfo* Adapters );	// How Many Adapters //
+const size_t count_pNetAdapterInfo( const pNetAdapterInfo* Adapters );	// How many Adapters? //
 
 // Both return a single Adapter (notice the missing "p" prefix) //
 const NetAdapterInfo* get_pNetAdapterInfo( const pNetAdapterInfo* Adapters, const size_t Index );
