@@ -70,6 +70,7 @@
 // Changelog:
 // 0.3 -- NetMask and Broadcast Addresses on Windows.
 //        Cleaned up NetAdapterInfo. Less confused.
+//        QNX (BlackBerry/PlayBook) support.
 // 0.2 -- Mac and iOS support.
 //        BSD Family (Open, Free, Net) support.
 //        Android support.

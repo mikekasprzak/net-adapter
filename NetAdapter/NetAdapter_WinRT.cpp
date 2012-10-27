@@ -23,63 +23,36 @@
 // 
 // For more information, please refer to <http://unlicense.org/>
 // - ------------------------------------------------------------------------------------------ - //
-#if !defined(NET_ADAPTER_STUB)
-#if defined(_WIN32) || (defined(__unix__) && !defined(__CYGWIN__)) || defined(__APPLE__) || defined(__QNXNTO__) || defined(WINAPI_FAMILY_APP)
+#if defined(WINAPI_FAMILY_APP) // WinRT //
 // - ------------------------------------------------------------------------------------------ - //
-#include <string.h>		// memset //
+// http://stackoverflow.com/questions/11961771/macro-to-recognize-winrt
+
+// Subnet Mask on WinRT
+// You can use HostName.IPInformation.PrefixLength.
+// See http://msdn.microsoft.com/en-us/library/windows/apps/windows.networking.connectivity.ipinformation.prefixlength.aspx
 // - ------------------------------------------------------------------------------------------ - //
 #include "NetAdapter.h"
 #include "NetAdapter_Internal.h"
 // - ------------------------------------------------------------------------------------------ - //
-
-// - ------------------------------------------------------------------------------------------ - //
-// Private //
-// - ------------------------------------------------------------------------------------------ - //
-NetAdapterInfo* new_NetAdapterInfo() {
-	NetAdapterInfo* Ret = new NetAdapterInfo;
-	
-	memset( Ret, 0, sizeof( NetAdapterInfo ) );
-	
-	return Ret;
-}
-// - ------------------------------------------------------------------------------------------ - //
-int delete_NetAdapterInfo( NetAdapterInfo* Adapter ) {
-	delete Adapter;
-
+pNetAdapterInfo* new_pNetAdapterInfo() {
 	return 0;
 }
 // - ------------------------------------------------------------------------------------------ - //
 
-
 // - ------------------------------------------------------------------------------------------ - //
-// Public //
-// - ------------------------------------------------------------------------------------------ - //
-int delete_pNetAdapterInfo( pNetAdapterInfo* Adapters ) {
+const NetAdapterInfo* get_primary_pNetAdapterInfo( const pNetAdapterInfo* Adapters ) {
 	if ( Adapters ) {
-		// Delete the individual Adapters first //
-		for ( size_t idx = 0; Adapters[idx] != 0; idx++ ) {
-			delete Adapters[idx];
-		}
-
-		// Delete the array //
-		delete [] Adapters;
-		return 0;
-	}
-	else {
-		// Hey you goof! You gave me a null pointer! //
-		return -1;
-	}
-}
-// - ------------------------------------------------------------------------------------------ - //
-const size_t count_pNetAdapterInfo( const pNetAdapterInfo* Adapters ) {
-	if ( Adapters ) {
-		size_t Count = 0;
+		size_t Index = 0;
 		
-		while ( Adapters[Count] != 0 ) {
-			Count++;
+		while ( Adapters[Index] != 0 ) {
+			if ( strcmp( Adapters[Index]->DNS, "" ) != 0 )
+				return Adapters[Index];
+			
+			Index++;
 		};
 		
-		return Count;
+		// None Found //
+		return 0;
 	}
 	else {
 		// Hey you goof! You gave me a null pointer! //
@@ -87,16 +60,5 @@ const size_t count_pNetAdapterInfo( const pNetAdapterInfo* Adapters ) {
 	}
 }
 // - ------------------------------------------------------------------------------------------ - //
-const NetAdapterInfo* get_pNetAdapterInfo( const pNetAdapterInfo* Adapters, const size_t Index ) {
-	if ( Adapters ) {
-		return Adapters[Index];
-	}
-	else {
-		// Hey you goof! You gave me a null pointer! //
-		return 0;
-	}
-}
-// - ------------------------------------------------------------------------------------------ - //
-#endif // defined(_WIN32) || (defined(__unix__) && !defined(__CYGWIN__)) || defined(__APPLE__) || defined(__QNXNTO__) || defined(WINAPI_FAMILY_APP) //
-#endif // !NET_ADAPTER_STUB //
+#endif // defined(WINAPI_FAMILY_APP) //
 // - ------------------------------------------------------------------------------------------ - //
