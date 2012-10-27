@@ -58,7 +58,7 @@ int delete_pNetAdapterInfo( pNetAdapterInfo* Adapters ) {
 	if ( Adapters ) {
 		// Delete the individual Adapters first //
 		for ( size_t idx = 0; Adapters[idx] != 0; idx++ ) {
-			delete Adapters[idx];
+			delete_NetAdapterInfo( Adapters[idx] );
 		}
 
 		// Delete the array //
