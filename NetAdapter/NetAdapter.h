@@ -69,6 +69,7 @@
 //   QNX: none
 // - ------------------------------------------------------------------------------------------ - //
 // Changelog:
+// 0.4 -- Fixed a crash on delete. Thanks Phil Hassey! 
 // 0.3 -- NetMask and Broadcast Addresses on Windows.
 //        Cleaned up NetAdapterInfo. Less confused.
 //        QNX (BlackBerry/PlayBook) support.

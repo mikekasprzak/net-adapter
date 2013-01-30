@@ -44,7 +44,8 @@ NetAdapterInfo* new_NetAdapterInfo() {
 }
 // - ------------------------------------------------------------------------------------------ - //
 int delete_NetAdapterInfo( NetAdapterInfo* Adapter ) {
-	delete Adapter;
+	if ( Adapter )
+		delete Adapter;
 
 	return 0;
 }
