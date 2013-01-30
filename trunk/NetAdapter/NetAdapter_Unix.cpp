@@ -36,6 +36,7 @@
 #include <ifaddrs.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
+#include <arpa/inet.h>
 #include <net/if.h>				// IFF_BROADCAST
 #include <netdb.h>
 // - ------------------------------------------------------------------------------------------ - //
