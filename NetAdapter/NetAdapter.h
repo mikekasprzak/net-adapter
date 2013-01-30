@@ -87,9 +87,9 @@
 // - ------------------------------------------------------------------------------------------ - //
 #include <string.h>							// size_t //
 // - ------------------------------------------------------------------------------------------ - //
-#define NET_ADAPTER_IPV4_LENGTH	(4*3)+3+1	// 4 integer 8bit numbers, 3 dots, null terminator //
-#define NET_ADAPTER_IPV6_LENGTH	(8*4)+7+1	// 8 hex 16bit numbers, 7 colons, null terminator //
-#define NET_ADAPTER_MAC_LENGTH	(8*2)+7+1	// 8 hex 8bit numbers, 7 colons, null terminator //
+#define NET_ADAPTER_IPV4_LENGTH	((4*3)+3+1)	// 4 integer 8bit numbers, 3 dots, null terminator //
+#define NET_ADAPTER_IPV6_LENGTH	((8*4)+7+1)	// 8 hex 16bit numbers, 7 colons, null terminator //
+#define NET_ADAPTER_MAC_LENGTH	((8*2)+7+1)	// 8 hex 8bit numbers, 7 colons, null terminator //
 // - ------------------------------------------------------------------------------------------ - //
 struct NetAdapterInfo {
 	char Name[128];								// A copy of its "nice" name. //
