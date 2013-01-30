@@ -115,11 +115,18 @@ pNetAdapterInfo* new_pNetAdapterInfo() {
 				safe_sprintf( Adapters[Index]->Name, sizeof(Adapters[Index]->Name), "%s", Current->ifa_name );
 				
 				// Copy Netmask //
-				getnameinfo( Current->ifa_netmask, sizeof(struct sockaddr_in), Adapters[Index]->NetMask, NI_MAXHOST, NULL, 0, NI_NUMERICHOST );
+//				getnameinfo( Current->ifa_netmask, sizeof(struct sockaddr_in), Adapters[Index]->NetMask, NI_MAXHOST, NULL, 0, NI_NUMERICHOST );
+
+				// Copy NetMask as string //
+				sockaddr_in* SNI = (sockaddr_in*)Current->ifa_netmask;
+				safe_sprintf( Adapters[Index]->NetMask, sizeof(Adapters[Index]->NetMask), "%s", inet_ntoa( SNI->sin_addr ) );
 			
 				// Copy Broadcast Address //
 	            if ( Current->ifa_flags & IFF_BROADCAST ) {
-					getnameinfo( Current->ifa_broadaddr, sizeof(struct sockaddr_in), Adapters[Index]->Broadcast, NI_MAXHOST, NULL, 0, NI_NUMERICHOST );
+//					getnameinfo( Current->ifa_broadaddr, sizeof(struct sockaddr_in), Adapters[Index]->Broadcast, NI_MAXHOST, NULL, 0, NI_NUMERICHOST );
+
+					sockaddr_in* SBI = (sockaddr_in*)Current->ifa_broadaddr;
+					safe_sprintf( Adapters[Index]->Broadcast, sizeof(Adapters[Index]->Broadcast), "%s", inet_ntoa( SBI->sin_addr ) );
 				}
 				
 				//if ( Current->ifa_flags & IFF_POINTOPOINT ) {
