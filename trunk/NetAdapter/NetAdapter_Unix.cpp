@@ -91,14 +91,11 @@ pNetAdapterInfo* new_pNetAdapterInfo() {
 
 		// *** //
 		
-		// Iterate though and populate data //
+		// Iterate though and populate data -- Note: this used to use getnameinfo. It doesn't anymore. //
 		size_t Index = 0;
 		for( ifaddrs* Current = IFA; Current != 0; Current = Current->ifa_next ) {
 			// If an IPv4 //
 			if ( Current->ifa_addr->sa_family == AF_INET ) {
-				// Copy IP as string //
-				//getnameinfo( Current->ifa_addr, sizeof(struct sockaddr_in), Adapters[Index]->IP, NI_MAXHOST, NULL, 0, NI_NUMERICHOST );
-
 				// Copy IP as byte array //
 				sockaddr_in* SAI = (sockaddr_in*)Current->ifa_addr;
 				const unsigned char* DataAddr = (const unsigned char*)&(SAI->sin_addr.s_addr);
@@ -107,6 +104,7 @@ pNetAdapterInfo* new_pNetAdapterInfo() {
 				*IPv4 = *(int*)DataAddr;
 			
 				// Copy IP as string //
+				//getnameinfo( Current->ifa_addr, sizeof(struct sockaddr_in), Adapters[Index]->IP, NI_MAXHOST, NULL, 0, NI_NUMERICHOST );
 				safe_sprintf( Adapters[Index]->IP, sizeof(Adapters[Index]->IP), "%s", inet_ntoa( SAI->sin_addr ) );
 			
 //				printf("%i.%i.%i.%i\n", Adapters[Index]->Data.IP[0], Adapters[Index]->Data.IP[1], Adapters[Index]->Data.IP[2], Adapters[Index]->Data.IP[3] );
@@ -114,23 +112,22 @@ pNetAdapterInfo* new_pNetAdapterInfo() {
 				// Copy Name //
 				safe_sprintf( Adapters[Index]->Name, sizeof(Adapters[Index]->Name), "%s", Current->ifa_name );
 				
-				// Copy Netmask //
-//				getnameinfo( Current->ifa_netmask, sizeof(struct sockaddr_in), Adapters[Index]->NetMask, NI_MAXHOST, NULL, 0, NI_NUMERICHOST );
-
 				// Copy NetMask as string //
+				//getnameinfo( Current->ifa_netmask, sizeof(struct sockaddr_in), Adapters[Index]->NetMask, NI_MAXHOST, NULL, 0, NI_NUMERICHOST );
 				sockaddr_in* SNI = (sockaddr_in*)Current->ifa_netmask;
 				safe_sprintf( Adapters[Index]->NetMask, sizeof(Adapters[Index]->NetMask), "%s", inet_ntoa( SNI->sin_addr ) );
 			
 				// Copy Broadcast Address //
 	            if ( Current->ifa_flags & IFF_BROADCAST ) {
-//					getnameinfo( Current->ifa_broadaddr, sizeof(struct sockaddr_in), Adapters[Index]->Broadcast, NI_MAXHOST, NULL, 0, NI_NUMERICHOST );
-
+					//getnameinfo( Current->ifa_broadaddr, sizeof(struct sockaddr_in), Adapters[Index]->Broadcast, NI_MAXHOST, NULL, 0, NI_NUMERICHOST );
 					sockaddr_in* SBI = (sockaddr_in*)Current->ifa_broadaddr;
 					safe_sprintf( Adapters[Index]->Broadcast, sizeof(Adapters[Index]->Broadcast), "%s", inet_ntoa( SBI->sin_addr ) );
 				}
 				
 				//if ( Current->ifa_flags & IFF_POINTOPOINT ) {
-				//	getnameinfo( Current->ifa_dstaddr, sizeof(struct sockaddr_in), Adapters[Index]->Broadcast, NI_MAXHOST, NULL, 0, NI_NUMERICHOST );					
+				//	//getnameinfo( Current->ifa_dstaddr, sizeof(struct sockaddr_in), Adapters[Index]->Broadcast, NI_MAXHOST, NULL, 0, NI_NUMERICHOST );					
+				//	sockaddr_in* SPI = (sockaddr_in*)Current->ifa_dstaddr;
+				//	safe_sprintf( Adapters[Index]->Point2Point, sizeof(Adapters[Index]->Point2Point), "%s", inet_ntoa( SPI->sin_addr ) );
 				//}
 				
 				Index++;	

@@ -71,6 +71,7 @@
 // Changelog:
 // 0.4 -- Fixed a crash on delete. Thanks Phil Hassey!
 //        Fixed some compiler warnings. 
+//        Unix version no longer using getnameinfo.
 // 0.3 -- NetMask and Broadcast Addresses on Windows.
 //        Cleaned up NetAdapterInfo. Less confused.
 //        QNX (BlackBerry/PlayBook) support.
