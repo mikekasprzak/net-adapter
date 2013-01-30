@@ -1,3 +1,3 @@
 #!/bin/sh
 
-g++ Sample.cpp NetAdapter/NetAdapter*.cpp -o Sample
+g++ -g Sample.cpp NetAdapter/NetAdapter*.cpp -o Sample
