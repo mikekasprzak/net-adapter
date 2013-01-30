@@ -156,13 +156,15 @@ pNetAdapterInfo* new_pNetAdapterInfo() {
 		// Copy Name //
 		{
 			// The strings are stored in wchar_t's, so we copy it to our char[] //
-			size_t Length = wcstombs( Adapters[Index]->Name, Current->FriendlyName, sizeof(Adapters[Index]->Name) );
+			//size_t Length =
+			wcstombs( Adapters[Index]->Name, Current->FriendlyName, sizeof(Adapters[Index]->Name) );
 		}
 		
 		// Copy Description //
 		{
 			// The strings are stored in wchar_t's, so we copy it to our char[] //
-			size_t Length = wcstombs( Adapters[Index]->Description, Current->Description, sizeof(Adapters[Index]->Description) );
+			//size_t Length = 
+			wcstombs( Adapters[Index]->Description, Current->Description, sizeof(Adapters[Index]->Description) );
 		}
 				
 		Index++;
@@ -173,17 +175,17 @@ pNetAdapterInfo* new_pNetAdapterInfo() {
 	// Retrieve NetMask and Broadcast // 
 	{
 		SOCKET sd = WSASocket(AF_INET, SOCK_DGRAM, 0, 0, 0, 0);
-		if ( sd != SOCKET_ERROR ) {
+		if ( (int)sd != SOCKET_ERROR ) {
 			DWORD BytesReturned = 0;
 			INTERFACE_INFO InterfaceList[32];
 			if ( WSAIoctl( sd, SIO_GET_INTERFACE_LIST, 0, 0, &InterfaceList, sizeof(InterfaceList), &BytesReturned, 0, 0) != SOCKET_ERROR ) {
 				size_t NumInterfaces = BytesReturned / sizeof(INTERFACE_INFO);
 				for ( size_t idx = 0; idx < NumInterfaces; idx++ ) {
 					for ( size_t idx2 = 0; idx2 < IPv4Count; idx2++ ) {
-						u_long inFlags = InterfaceList[idx].iiFlags;
+						//u_long inFlags = InterfaceList[idx].iiFlags;
 						sockaddr_in* inIP = (sockaddr_in*)&(InterfaceList[idx].iiAddress);
 						sockaddr_in* inNetMask = (sockaddr_in*)&(InterfaceList[idx].iiNetmask);
-						sockaddr_in* inBroadcast = (sockaddr_in*)&(InterfaceList[idx].iiBroadcastAddress);
+						//sockaddr_in* inBroadcast = (sockaddr_in*)&(InterfaceList[idx].iiBroadcastAddress);
 						
 						// Flags: IFF_UP, IFF_POINTTOPOINT, IFF_LOOPBACK, IFF_BROADCAST, IFF_MULTICAST //
 
