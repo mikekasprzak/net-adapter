@@ -16,5 +16,3 @@ one of those other platforms, I would love to know what the Sample program
 outputs. Thanks!
 ```
 http://www.toonormal.com/2012/10/26/net-adapter-aka-the-get-ipmac-address-library/
-
-I've since merged-in one user patch that should fix a potential crashes on Android.
