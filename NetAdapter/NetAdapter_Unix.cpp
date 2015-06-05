@@ -72,7 +72,7 @@ pNetAdapterInfo* new_pNetAdapterInfo() {
 		size_t IPv4Count = 0;
 		for( ifaddrs* Current = IFA; Current != 0; Current = Current->ifa_next ) {
 			// If an IPv4 //
-			if ( Current->ifa_addr->sa_family == AF_INET ) {
+			if ( Current->ifa_addr && Current->ifa_addr->sa_family == AF_INET ) {
 				IPv4Count++;
 			}
 		}
@@ -95,7 +95,7 @@ pNetAdapterInfo* new_pNetAdapterInfo() {
 		size_t Index = 0;
 		for( ifaddrs* Current = IFA; Current != 0; Current = Current->ifa_next ) {
 			// If an IPv4 //
-			if ( Current->ifa_addr->sa_family == AF_INET ) {
+			if ( Current->ifa_addr && Current->ifa_addr->sa_family == AF_INET ) {
 				// Copy IP as byte array //
 				sockaddr_in* SAI = (sockaddr_in*)Current->ifa_addr;
 				const unsigned char* DataAddr = (const unsigned char*)&(SAI->sin_addr.s_addr);
@@ -139,7 +139,7 @@ pNetAdapterInfo* new_pNetAdapterInfo() {
 		for( ifaddrs* Current = IFA; Current != 0; Current = Current->ifa_next ) {
 #ifdef _LINUX_PATH
 			// If an AF_PACKET device (i.e. hardware device) //
-			if ( Current->ifa_addr->sa_family == AF_PACKET ) {
+			if ( Current->ifa_addr && Current->ifa_addr->sa_family == AF_PACKET ) {
 				for( int idx=0; idx < IPv4Count; idx++ ) {
 					if ( strcmp( Adapters[idx]->Name, Current->ifa_name ) == 0 ) {
 						sockaddr_ll* s = (sockaddr_ll*)Current->ifa_addr;
@@ -159,7 +159,7 @@ pNetAdapterInfo* new_pNetAdapterInfo() {
 				}
 			}
 #else // _UNIX_PATH //
-			if ( Current->ifa_addr->sa_family == AF_LINK ) {
+			if ( Current->ifa_addr && Current->ifa_addr->sa_family == AF_LINK ) {
 				for( int idx=0; idx < IPv4Count; idx++ ) {
 					if ( strcmp( Adapters[idx]->Name, Current->ifa_name ) == 0 ) {
 						sockaddr_dl* s = (sockaddr_dl*)Current->ifa_addr;
@@ -179,7 +179,7 @@ pNetAdapterInfo* new_pNetAdapterInfo() {
 			}
 #endif // _LINUX_PATH //
 			
-			if ( Current->ifa_addr->sa_family == AF_INET6 ) {
+			if ( Current->ifa_addr && Current->ifa_addr->sa_family == AF_INET6 ) {
 				// IPv6 Address //
 			}
 		}
