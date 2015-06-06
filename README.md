@@ -2,10 +2,12 @@
 cross platform library for getting presentable Network Adapter information. Written in a "c style" C++.
 
 Network adapter names (e.g. "Wireless Network Connection", "eth0", "en0", or "em0")
+
 * IP address (e.g. 192.168.0.184)
 * Subnet Mask (e.g. 255.255.255.0)
 * UDP Broadcast address (e.g. 192.168.0.255)
 * MAC address (e.g. b0:90:92:01:e2:aa)
+
 The goal of the library is to provide presentable data, so data is stored as c strings. For use, data is also available as arrays of unsigned chars and unsigned shorts (where applicable).
 
 Usage (Primary Adapter):
