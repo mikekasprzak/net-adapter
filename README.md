@@ -6,7 +6,7 @@ Network adapter names (e.g. "Wireless Network Connection", "eth0", "en0", or "em
 * Subnet Mask (e.g. 255.255.255.0)
 * UDP Broadcast address (e.g. 192.168.0.255)
 * MAC address (e.g. b0:90:92:01:e2:aa)
-* The goal of the library is to provide presentable data, so data is stored as c strings. For use, data is also available as arrays of unsigned chars and unsigned shorts (where applicable).
+The goal of the library is to provide presentable data, so data is stored as c strings. For use, data is also available as arrays of unsigned chars and unsigned shorts (where applicable).
 
 Usage (Primary Adapter):
 
@@ -43,7 +43,7 @@ Usage (Printing an IP address using the raw data):
 const NetAdapterInfo* Ct = get_primary_pNetAdapterInfo( Adapters );
 printf( "%s: %i.%i.%i.%i\n", Ct->Name, Ct->Data.IP[0], Ct->Data.IP[1], Ct->Data.IP[2], Ct->Data.IP[3] );
 ```
-More information can be found in NetAdapter.h
+More information can be found in [NetAdapter.h](NetAdapter/NetAdapter.h)
 
 
 # History
