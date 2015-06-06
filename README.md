@@ -10,7 +10,9 @@ Network adapter names (e.g. "Wireless Network Connection", "eth0", "en0", or "em
 
 The goal of the library is to provide presentable data, so data is stored as c strings. For use, data is also available as arrays of unsigned chars and unsigned shorts (where applicable).
 
-Usage (Primary Adapter):
+**NOTE**: Net Adapter gets your local PC's IP address on the local network, **NOT** your IP on the internet. If you want to know that, you'll have to ask [an outside server on the internet](http://canihazip.com/s).
+
+### Usage (Primary Adapter):
 
 ```c++
 #include <NetAdapter/NetAdapter.h>                                              // Or wherever you put it //
@@ -25,7 +27,7 @@ printf( "%s: %s (%s)\n", Current->Name, Current->IP, Current->MAC );
 delete_pNetAdapterInfo( Adapters );                                             // Cleanup //
 ```
 
-Usage (All Adapters):
+### Usage (All Adapters):
 
 ```c++
 pNetAdapterInfo* Adapters = new_pNetAdapterInfo();
@@ -39,7 +41,7 @@ for ( size_t Index = 0; Index < AdapterCount; Index++ ) {
 delete_pNetAdapterInfo( Adapters );
 ```
 
-Usage (Printing an IP address using the raw data):
+### Usage (Printing an IP address using the raw data):
 
 ```c++
 const NetAdapterInfo* Ct = get_primary_pNetAdapterInfo( Adapters );
