@@ -69,6 +69,7 @@
 //   QNX: none
 // - ------------------------------------------------------------------------------------------ - //
 // Changelog:
+// 0.5 -- Android crash fix contributed by Brian Schwind. Thanks Brian!
 // 0.4 -- Tracked down a crash on Apple targets. getnameinfo was to blame. Thanks Phil Hassey!
 //        Fixed some compiler warnings. 
 // 0.3 -- NetMask and Broadcast Addresses on Windows.
