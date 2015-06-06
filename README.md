@@ -52,7 +52,7 @@ More information can be found in [NetAdapter.h](NetAdapter/NetAdapter.h)
 
 # History
 
-Way back in 2012, I wanted a simple way to get the IP and MAC address of the current computer. Funny thing, this actually beyond the scope of networking libraries like ENet.
+Way back in 2012, I wanted a simple way to get the IP and MAC address of the current computer. Funny thing, this is actually beyond the scope of networking libraries like ENet.
 
 Since Google Code is shutting down, I moved it. Here is the original blog post:
 
