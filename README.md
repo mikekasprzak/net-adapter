@@ -10,7 +10,7 @@ Network adapter names (e.g. "Wireless Network Connection", "eth0", "en0", or "em
 
 The goal of the library is to provide presentable data, so data is stored as c strings. For use, data is also available as arrays of unsigned chars and unsigned shorts (where applicable).
 
-**NOTE**: Net Adapter gets your local PC's IP address on the local network, **NOT** your IP on the internet. If you want to know that, you'll have to ask [an outside server on the internet](http://canihazip.com/s).
+**NOTE**: net-adapter gets your PC's IP address on the local network, **NOT** your IP on the internet. If you want to know that, you'll have to ask [an outside server on the internet](http://canihazip.com/s). Sorry.
 
 ### Usage (Primary Adapter):
 
